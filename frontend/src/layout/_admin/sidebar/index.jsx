@@ -42,105 +42,20 @@ import Scrollbar from 'src/components/Scrollbar';
 
 // Dashboard Side NevLinks
 export const navlinks = [
-  {
-    id: 1,
-    title: 'Dashboard',
-    slug: 'dashboard',
-    icon: <LuLayoutDashboard />
-  },
-  {
-    id: 2,
-    title: 'Categories',
-    slug: 'categories',
-    icon: <TbCategory2 />,
-    isSearch: true
-  },
-  {
-    id: 3,
-    title: 'Sub Categories',
-    slug: 'sub-categories',
-    icon: <TbCategory2 />,
-    isSearch: true
-  },
-  {
-    id: 3,
-    title: 'Brands',
-    slug: 'brands',
-    icon: <FaRegBuilding />,
-    isSearch: true
-  },
-  {
-    id: 4,
-    title: 'Products',
-    slug: 'products',
-    icon: <BsShop />,
-    isSearch: true
-  },
-
-  {
-    id: 5,
-    title: 'Orders',
-    slug: 'orders',
-    icon: <BsCart3 />,
-    isSearch: true
-  },
-  {
-    id: 6,
-    title: 'Shops',
-    slug: 'shops',
-    icon: <BsBuildings />,
-    isSearch: true
-  },
-  {
-    id: 7,
-    title: 'Users',
-    slug: 'users',
-    icon: <LuUsers />,
-    isSearch: true
-  },
-  {
-    id: 8,
-    title: 'Payouts',
-    slug: 'payouts',
-    icon: <BsCashCoin />,
-    isSearch: false
-  },
-  {
-    id: 9,
-    title: 'Coupon codes',
-    slug: 'coupon-codes',
-    icon: <RiCoupon5Line />,
-    isSearch: true
-  },
-  {
-    id: 122,
-    title: 'Compaigns',
-    slug: 'compaigns',
-    icon: <LuBadgePercent />,
-    isSearch: true
-  },
-  {
-    id: 11,
-    title: 'Currencies',
-    slug: 'currencies',
-    icon: <AiOutlineDollarCircle />,
-    isSearch: true
-  },
-
-  {
-    id: 12,
-    title: 'Newsletter',
-    slug: 'newsletter',
-    icon: <SlEnvolopeLetter />,
-    isSearch: false
-  },
-  {
-    id: 13,
-    title: 'Settings',
-    slug: 'settings',
-    icon: <IoSettingsOutline />,
-    isSearch: false
-  }
+  { id: 1, title: 'Dashboard', slug: 'dashboard', icon: <LuLayoutDashboard /> },
+  { id: 2, title: 'Categories', slug: 'categories', icon: <TbCategory2 />, isSearch: true },
+  { id: 3, title: 'Sub Categories', slug: 'sub-categories', icon: <TbCategory2 />, isSearch: true },
+  { id: 4, title: 'Brands', slug: 'brands', icon: <FaRegBuilding />, isSearch: true },
+  { id: 5, title: 'Products', slug: 'products', icon: <BsShop />, isSearch: true },
+  { id: 6, title: 'Orders', slug: 'orders', icon: <BsCart3 />, isSearch: true },
+  { id: 7, title: 'Shops', slug: 'shops', icon: <BsBuildings />, isSearch: true },
+  { id: 8, title: 'Users', slug: 'users', icon: <LuUsers />, isSearch: true },
+  { id: 9, title: 'Payouts', slug: 'payouts', icon: <BsCashCoin />, isSearch: false },
+  { id: 10, title: 'Coupon codes', slug: 'coupon-codes', icon: <RiCoupon5Line />, isSearch: true },
+  { id: 11, title: 'Compaigns', slug: 'compaigns', icon: <LuBadgePercent />, isSearch: true },
+  { id: 12, title: 'Currencies', slug: 'currencies', icon: <AiOutlineDollarCircle />, isSearch: true },
+  { id: 13, title: 'Newsletter', slug: 'newsletter', icon: <SlEnvolopeLetter />, isSearch: false },
+  { id: 14, title: 'Settings', slug: 'settings', icon: <IoSettingsOutline />, isSearch: false }
 ];
 
 const drawerWidth = 240;
