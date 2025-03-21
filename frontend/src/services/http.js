@@ -49,6 +49,7 @@ const http = axios.create({
 http.interceptors.request.use(
   (config) => {
     const token = getToken();
+    console.log('Axios interceptor token:', token); // <-- debug log
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

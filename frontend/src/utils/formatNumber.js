@@ -8,7 +8,7 @@ const locale = 'en-US';
 export function fCurrency(number) {
   const currency = new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: process.env.NEXT_PUBLIC_BASE_CURRENCY
+    currency: process.env.BASE_CURRENCY
   });
 
   return currency.format(number).slice(0, -1);

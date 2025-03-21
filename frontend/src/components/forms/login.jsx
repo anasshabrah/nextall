@@ -11,8 +11,6 @@ import toast from 'react-hot-toast';
 
 // formik
 import { useFormik, Form, FormikProvider } from 'formik';
-// cookies
-import { createCookies } from 'src/hooks/cookies';
 // redux
 import { useDispatch } from 'react-redux';
 import { setWishlist } from 'src/redux/slices/wishlist';
@@ -55,8 +53,10 @@ export default function LoginForm() {
       // Save user’s wishlist in Redux
       dispatch(setWishlist(data.user.wishlist));
 
-      // IMPORTANT: Save the token in localStorage so the Axios interceptor can attach it
+      // Save the token in localStorage so the Axios interceptor can attach it
       localStorage.setItem('token', data.token);
+      // Also, explicitly set the token as a cookie (available on the client)
+      document.cookie = `token=${data.token}; path=/`;
 
       setLoading(false);
       toast.success('Logged in successfully!');
@@ -77,14 +77,16 @@ export default function LoginForm() {
     },
     onError: (err) => {
       setLoading(false);
-      toast.error(err.response.data.message || 'Login failed');
+      toast.error(err.response?.data?.message || 'Login failed');
     }
   });
 
   // Validation schema with Yup
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Enter valid email').required('Email is required.'),
-    password: Yup.string().required('Password is required.').min(8, 'Password should be 8 characters or longer.')
+    password: Yup.string()
+      .required('Password is required.')
+      .min(8, 'Password should be 8 characters or longer.')
   });
 
   const formik = useFormik({
@@ -158,7 +160,7 @@ export default function LoginForm() {
           <Stack spacing={3}>
             {/* Email Field */}
             <Stack gap={0.5} width={1}>
-              <Typography variant="overline" color="text.primary" htmlFor="email" component={'label'}>
+              <Typography variant="overline" color="text.primary" htmlFor="email" component="label">
                 Email
               </Typography>
               <TextField
@@ -181,7 +183,7 @@ export default function LoginForm() {
 
             {/* Password Field */}
             <Stack gap={0.5} width={1}>
-              <Typography variant="overline" color="text.primary" htmlFor="password" component={'label'}>
+              <Typography variant="overline" color="text.primary" htmlFor="password" component="label">
                 Password
               </Typography>
               <TextField
