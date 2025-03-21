@@ -1,5 +1,5 @@
 // File: C:\Users\hanos\nextall\frontend\src\app\(user)\products\[category]\[subCategory]\page.jsx
-// mui
+
 import { Box, Container } from '@mui/material';
 
 // components
@@ -14,24 +14,21 @@ export const revalidate = 10;
 
 export async function generateStaticParams() {
   const { data } = await api.getSubCategorySlugs();
-  return data?.map((cat) => {
-    return {
-      subCategory: cat.slug,
-      category: cat.parentCategory.slug
-    };
-  });
+  // Ensure that an array is always returned—even if data is undefined
+  return (data?.map((cat) => ({
+    subCategory: cat.slug,
+    category: cat.parentCategory.slug,
+  })) || []);
 }
 
 export async function generateMetadata({ params }) {
   const { data: response } = await api.getSubCategoryBySlug(params.subCategory);
-
   return {
-    title: response.metaTitle,
+    title: response.metaTitle || response.name,
     description: response.metaDescription,
-    title: response.name,
     openGraph: {
-      images: [response.cover.url]
-    }
+      images: [response.cover.url],
+    },
   };
 }
 
@@ -46,21 +43,10 @@ export default async function Listing({ params }) {
           <HeaderBreadcrumbs
             heading={subCategoryData?.name}
             links={[
-              {
-                name: 'Home',
-                href: '/'
-              },
-              {
-                name: 'Products',
-                href: '/products'
-              },
-              {
-                name: subCategoryData?.parentCategory?.name,
-                href: `/products/${category}`
-              },
-              {
-                name: subCategoryData?.name
-              }
+              { name: 'Home', href: '/' },
+              { name: 'Products', href: '/products' },
+              { name: subCategoryData?.parentCategory?.name, href: `/products/${category}` },
+              { name: subCategoryData?.name },
             ]}
           />
           <ProductList subCategory={subCategoryData} />
