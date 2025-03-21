@@ -4,23 +4,27 @@ import { Box, Container } from '@mui/material';
 import ShopDetailCover from 'src/components/_admin/shops/shopDetailCover';
 import ProductList from 'src/components/_main/products';
 
-// We now use fetch directly and rely on BASE_URL from next.config.js
+// Use absolute URL if BASE_URL is set and not localhost;
+// otherwise, use a relative URL.
+const baseUrl =
+  process.env.BASE_URL && process.env.BASE_URL !== 'http://localhost:3000'
+    ? process.env.BASE_URL
+    : '';
+
 export const dynamic = 'error';
 export const revalidate = 10;
 
 export async function generateStaticParams() {
-  // Use an absolute URL so that the API is reachable during build
-  const res = await fetch(`${process.env.BASE_URL}/api/compaigns-slugs`);
+  const res = await fetch(`${baseUrl || ''}/api/compaigns-slugs`);
   if (!res.ok) {
     throw new Error('Failed to fetch compaign slugs');
   }
   const { data } = await res.json();
-  // Map over the data array to return the expected params structure
   return data?.map((compaign) => ({ slug: compaign.slug })) || [];
 }
 
 export async function generateMetadata({ params }) {
-  const res = await fetch(`${process.env.BASE_URL}/api/compaigns/${params.slug}`);
+  const res = await fetch(`${baseUrl || ''}/api/compaigns/${params.slug}`);
   if (!res.ok) {
     throw new Error('Failed to fetch compaign data');
   }
@@ -36,7 +40,7 @@ export async function generateMetadata({ params }) {
 
 export default async function Listing({ params }) {
   const { slug } = params;
-  const res = await fetch(`${process.env.BASE_URL}/api/compaign-title/${slug}`);
+  const res = await fetch(`${baseUrl || ''}/api/compaign-title/${slug}`);
   if (!res.ok) {
     throw new Error('Failed to fetch compaign title');
   }
