@@ -129,3 +129,13 @@ dist
 .env.test.local
 .env.production.local
 .env.local
+
+# Excluded files
+sr.py
+zz.bat
+project-relations.txt
+project_structure.txt
+auth.py
+all.py
+generate-relations.js
+bb.py
