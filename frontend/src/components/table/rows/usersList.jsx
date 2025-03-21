@@ -1,4 +1,3 @@
-// File: C:\Users\hanos\nextall\frontend\src\components\table\rows\usersList.jsx
 import PropTypes from 'prop-types';
 import { enUS } from 'date-fns/locale';
 import { useRouter } from 'next-nprogress-bar';
@@ -44,18 +43,14 @@ const ThumbImgStyle = styled(Box)(({ theme }) => ({
   position: 'relative',
   overflow: 'hidden'
 }));
+
 export default function UserRow({ isLoading, row, setId }) {
   const router = useRouter();
   console.log(row, 'row data');
   return (
     <TableRow hover key={Math.random()}>
       <TableCell component="th" scope="row">
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center'
-          }}
-        >
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {isLoading ? (
             <Skeleton variant="circular" width={40} height={40} />
           ) : row?.cover?.url ? (
@@ -96,16 +91,11 @@ export default function UserRow({ isLoading, row, setId }) {
                 </IconButton>
               ) : (
                 <Tooltip title={row.role === 'admin' ? 'Remove an admin' : 'Make an admin'}>
-                  <IconButton
-                    onClick={() => {
-                      setId(row._id);
-                    }}
-                  >
-                    {row.role === 'admin' ? <FaUserCheck /> : <LuUser2 />}
+                  <IconButton onClick={() => { setId(row._id); }}>
+                    {row.role === 'admin' ? <FaUserCheck /> : <LuUser />}
                   </IconButton>
                 </Tooltip>
               )}
-
               <Tooltip title="Preview">
                 <IconButton onClick={() => router.push(`/admin/users/${row?._id}`)}>
                   <FiEye />
