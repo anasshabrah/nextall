@@ -12,7 +12,7 @@ import { fDateShort } from 'src/utils/formatTime';
 
 // icons
 import { FiEye } from 'react-icons/fi';
-import { LuUser2 } from 'react-icons/lu';
+import { LuUser } from 'react-icons/lu';
 import { FaUserCheck } from 'react-icons/fa6';
 
 // component

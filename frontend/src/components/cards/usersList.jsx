@@ -13,7 +13,7 @@ import BlurImage from 'src/components/blurImage';
 import { capitalize } from 'lodash';
 // icons
 import { FiEye } from 'react-icons/fi';
-import { LuUser2 } from 'react-icons/lu';
+import { LuUser } from 'react-icons/lu';
 import { FaUserCheck } from 'react-icons/fa6';
 
 const RootStyle = styled(Paper)(({ theme }) => ({
