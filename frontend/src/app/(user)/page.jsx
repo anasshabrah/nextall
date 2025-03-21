@@ -3,12 +3,12 @@
 import dynamic from 'next/dynamic';
 
 // mui
-import { Container } from '@mui/material'; // Importing Container component from MUI (Material-UI) library.
+import { Container } from '@mui/material';
 
 // components
-import Hero from 'src/components/_main/home/hero'; // Importing the Hero component.
-import WhyUs from 'src/components/_main/home/whyUs'; // Importing the WhyUs component.
-import TopBanners from 'src/components/_main/home/topBanners'; // Importing the TopBanners component.
+import Hero from 'src/components/_main/home/hero';
+import WhyUs from 'src/components/_main/home/whyUs';
+import TopBanners from 'src/components/_main/home/topBanners';
 
 // Dynamic imports
 const Categories = dynamic(() => import('src/components/_main/home/categories'));
