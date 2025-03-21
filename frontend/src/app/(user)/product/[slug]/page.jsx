@@ -1,5 +1,8 @@
 // File: C:\Users\hanos\nextall\frontend\src\app\(user)\product\[slug]\page.jsx
-import React, { Suspense } from 'react';
+import React from 'react';
+import { Suspense } from 'react';
+
+// mui
 import { Box, Container, Stack, Grid } from '@mui/material';
 
 // components
@@ -18,25 +21,30 @@ export const dynamic = 'error';
 
 export async function generateStaticParams() {
   const { data } = await api.getProductSlugs();
-  // Ensure an array is returned even if data is undefined
-  return (data?.map((product) => ({ slug: product.slug })) || []);
+  return data?.map((product) => {
+    return {
+      slug: product.slug
+    };
+  });
 }
 
 export async function generateMetadata({ params }) {
   const { data: response } = await api.getProductDetails(params.slug);
+
   return {
-    title: response?.metaTitle || response?.name || 'Product Details',
-    description: response?.metaDescription || '',
+    title: response?.metaTitle,
+    description: response?.metaDescription,
     keywords: response?.tags,
-    // Safeguard mapping of images
+    title: response?.name,
     openGraph: {
-      images: Array.isArray(response?.images) ? response.images.map((v) => v.url) : []
+      images: response?.images.map((v) => v.url)
     }
   };
 }
 
 export default async function ProductDetail({ params: { slug } }) {
   const response = await api.getProductDetails(slug);
+
   const { data, totalRating, totalReviews, brand, category } = response;
 
   return (
@@ -46,9 +54,17 @@ export default async function ProductDetail({ params: { slug } }) {
           <HeaderBreadcrumbs
             heading="Product Details"
             links={[
-              { name: 'Home', href: '/' },
-              { name: 'Products', href: '/products' },
-              { name: data?.name }
+              {
+                name: 'Home',
+                href: '/'
+              },
+              {
+                name: 'Products',
+                href: '/products'
+              },
+              {
+                name: data?.name
+              }
             ]}
           />
           <Grid container spacing={2} justifyContent="center">
@@ -69,13 +85,13 @@ export default async function ProductDetail({ params: { slug } }) {
           <ProductAdditionalInfo />
           <Suspense fallback={<></>}>
             <ProductDetailTabs
-              product={{ description: data?.description, _id: data?._id }}
+              product={{ description: data.description, _id: data._id }}
               totalRating={totalRating}
               totalReviews={totalReviews}
             />
           </Suspense>
           <Suspense fallback={<></>}>
-            <RelatedProductsCarousel id={data?._id} category={category?.slug} />
+            <RelatedProductsCarousel id={data._id} category={category?.slug} />
           </Suspense>
         </Stack>
       </Container>

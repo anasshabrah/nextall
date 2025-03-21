@@ -1,5 +1,3 @@
-// C:\Users\hanos\nextall\backend\src\controllers\compaign.js
-
 const Compaign = require('../models/Compaign');
 const Product = require('../models/Product');
 const _ = require('lodash');

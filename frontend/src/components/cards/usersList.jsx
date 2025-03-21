@@ -1,3 +1,4 @@
+// File: C:\Users\hanos\nextall\frontend\src\components\cards\usersList.jsx
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next-nprogress-bar';
@@ -12,7 +13,7 @@ import BlurImage from 'src/components/blurImage';
 import { capitalize } from 'lodash';
 // icons
 import { FiEye } from 'react-icons/fi';
-import { LuUser } from 'react-icons/lu';
+import { LuUser2 } from 'react-icons/lu';
 import { FaUserCheck } from 'react-icons/fa6';
 
 const RootStyle = styled(Paper)(({ theme }) => ({
@@ -62,7 +63,6 @@ const RootStyle = styled(Paper)(({ theme }) => ({
     }
   }
 }));
-
 const ThumbImgStyle = styled(Box)(({ theme }) => ({
   width: 50,
   minWidth: 50,
@@ -94,6 +94,18 @@ export default function UserListCard({ item, isLoading }) {
               </Avatar>
             )}
             <Stack spacing={0.1}>
+              {/* <Link
+                className="name"
+                component={NextLink}
+                href={`/dashboard/users/${item?._id}`}
+                underline="none"
+              >
+                {isLoading ? (
+                  <Skeleton variant="text" />
+                ) : (
+                  `${capitalize(item.firstName)} ${capitalize(item.firstName)}`
+                )}
+              </Link> */}
               <Typography noWrap variant="h6">
                 {isLoading ? <Skeleton variant="text" /> : capitalize(item.firstName).slice(0, 20)}
               </Typography>
@@ -130,8 +142,13 @@ export default function UserListCard({ item, isLoading }) {
                         <FaUserCheck />
                       </IconButton>
                     ) : (
-                      <IconButton size="small" onClick={() => { setId(item._id); }}>
-                        {item.role === 'admin' ? <FaUserCheck /> : <LuUser />}
+                      <IconButton
+                        size="small"
+                        onClick={() => {
+                          setId(item._id);
+                        }}
+                      >
+                        {item.role === 'admin' ? <FaUserCheck /> : <LuUser2 />}
                       </IconButton>
                     )}
                     <IconButton size="small" onClick={() => router.push(`/admin/users/${item?._id}`)}>
@@ -147,7 +164,6 @@ export default function UserListCard({ item, isLoading }) {
     </RootStyle>
   );
 }
-
 UserListCard.propTypes = {
   item: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired

@@ -139,5 +139,3 @@ auth.py
 all.py
 generate-relations.js
 bb.py
-.vercel
-.env*.local

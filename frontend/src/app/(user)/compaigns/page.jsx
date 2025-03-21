@@ -1,8 +1,15 @@
 // File: C:\Users\hanos\nextall\frontend\src\app\(user)\compaigns\page.jsx
 'use client';
+// react
 import React from 'react';
+
+// mui
 import { Typography, Grid, Box, Stack, Container } from '@mui/material';
-import CompaginCard from 'src/components/cards/compaign';
+
+// component
+import CompaginCard from 'src/components/cards/compagin';
+
+// api
 import * as api from 'src/services';
 import { useQuery } from 'react-query';
 
@@ -10,7 +17,13 @@ export default function CompaignPage() {
   const { data, isLoading } = useQuery(['get-home-compaign-all'], () => api.getHomeCompaigns());
   return (
     <Container maxWidth="xl">
-      <Stack direction={'column'} sx={{ gap: 3, my: 5 }}>
+      <Stack
+        direction={'column'}
+        sx={{
+          gap: 3,
+          my: 5
+        }}
+      >
         <Box>
           <Typography variant="h2" color="text.primary" textAlign="center">
             All Compaigns

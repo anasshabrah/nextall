@@ -1,59 +1,52 @@
 // File: C:\Users\hanos\nextall\frontend\src\app\(user)\compaigns\[slug]\page.jsx
-
+// mui
 import { Box, Container } from '@mui/material';
+
+// components
 import ShopDetailCover from 'src/components/_admin/shops/shopDetailCover';
 import ProductList from 'src/components/_main/products';
-import mongoose from 'mongoose';
 
-// Correct relative path to the backend Compaign model:
-import Compaign from '../../../../../../backend/src/models/Compaign';
-
-// Helper: Connect to MongoDB if not already connected.
-async function connectToDatabase() {
-  if (mongoose.connection.readyState >= 1) return;
-  return mongoose.connect(process.env.MONGODB_URI);
-}
+// api
+import * as api from 'src/services';
 
 export const dynamic = 'error';
 export const revalidate = 10;
 
 export async function generateStaticParams() {
-  await connectToDatabase();
-  // Fetch only the slug field from all compaigns.
-  const compaigns = await Compaign.find().select('slug').lean();
-  return compaigns.map((compaign) => ({ slug: compaign.slug }));
+  const { data } = await api.getCompaignSlugs();
+  const mapped = data?.map((compaign) => {
+    return {
+      slug: compaign.slug
+    };
+  });
+  return mapped;
 }
 
 export async function generateMetadata({ params }) {
-  await connectToDatabase();
-  // Fetch the compaign data based on the slug.
-  const compaign = await Compaign.findOne({ slug: params.slug }).lean();
-  if (!compaign) {
-    throw new Error('Compaign not found');
-  }
+  const { data: response } = await api.getCompaignBySlug(params.slug);
+
   return {
-    title: compaign.metaTitle || compaign.title || 'Compaign',
-    description: compaign.metaDescription || '',
+    title: response.metaTitle,
+    description: response.metaDescription,
+    title: response.title,
     openGraph: {
-      images: [compaign.cover?.url || ''],
-    },
+      images: [response.cover.url]
+    }
   };
 }
-
 export default async function Listing({ params }) {
-  await connectToDatabase();
-  const compaign = await Compaign.findOne({ slug: params.slug }).lean();
-  if (!compaign) {
-    throw new Error('Compaign not found');
-  }
+  const { slug } = params;
+  const { data: compaign } = await api.getCompaignTitle(slug);
+
   return (
     <Box>
       <Box sx={{ bgcolor: 'background.default' }}>
         <Container maxWidth="xl">
           <Box mt={3}>
-            <ShopDetailCover page="compaigns" isUser data={compaign} isLoading={false} />
+            <ShopDetailCover page={'compaigns'} isUser data={compaign} isLoading={false} />
           </Box>
-          <ProductList compaign={compaign} fetchFilters="getFiltersByShop" />
+
+          <ProductList compaign={compaign} fetchFilters={'getFiltersByShop'} />
         </Container>
       </Box>
     </Box>

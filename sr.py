@@ -1,7 +1,7 @@
 import os
 
 # Define the search term
-search_term = "LuUser2"
+search_term = "env.development"
 
 # Define the file extensions to search for
 file_extensions = ('.ts', '.tsx', '.js', '.jsx', '.json')
