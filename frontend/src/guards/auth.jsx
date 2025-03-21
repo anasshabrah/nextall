@@ -1,0 +1,30 @@
+// File: C:\Users\hanos\nextall\frontend\src\guards\auth.jsx
+'use client';
+import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { useSelector } from 'src/redux';
+import { useRouter } from 'next-nprogress-bar';
+import Loading from 'src/components/loading';
+
+export default function Guest({ children }) {
+  const router = useRouter();
+  const { isAuthenticated } = useSelector(({ user }) => user);
+  const [isAuth, setAuth] = useState(true);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setAuth(false);
+      router.push('/auth/login');
+    }
+  }, [isAuthenticated, router]);
+
+  if (!isAuth) {
+    return <Loading />;
+  }
+
+  return children;
+}
+
+Guest.propTypes = {
+  children: PropTypes.node.isRequired
+};
