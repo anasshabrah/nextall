@@ -1,5 +1,3 @@
-// C:\Users\hanos\nextall\backend\src\controllers\notification.js
-
 const Notifications = require("../models/Notification");
 
 const getNotifications = async (req, res) => {

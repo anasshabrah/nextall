@@ -40,7 +40,7 @@ import { LuBadgePercent } from 'react-icons/lu';
 // components
 import Scrollbar from 'src/components/Scrollbar';
 
-// Dashboard Side NavLinks with unique ids
+// Dashboard Side NevLinks
 export const navlinks = [
   {
     id: 1,
@@ -63,77 +63,79 @@ export const navlinks = [
     isSearch: true
   },
   {
-    id: 4,
+    id: 3,
     title: 'Brands',
     slug: 'brands',
     icon: <FaRegBuilding />,
     isSearch: true
   },
   {
-    id: 5,
+    id: 4,
     title: 'Products',
     slug: 'products',
     icon: <BsShop />,
     isSearch: true
   },
+
   {
-    id: 6,
+    id: 5,
     title: 'Orders',
     slug: 'orders',
     icon: <BsCart3 />,
     isSearch: true
   },
   {
-    id: 7,
+    id: 6,
     title: 'Shops',
     slug: 'shops',
     icon: <BsBuildings />,
     isSearch: true
   },
   {
-    id: 8,
+    id: 7,
     title: 'Users',
     slug: 'users',
     icon: <LuUsers />,
     isSearch: true
   },
   {
-    id: 9,
+    id: 8,
     title: 'Payouts',
     slug: 'payouts',
     icon: <BsCashCoin />,
     isSearch: false
   },
   {
-    id: 10,
+    id: 9,
     title: 'Coupon codes',
     slug: 'coupon-codes',
     icon: <RiCoupon5Line />,
     isSearch: true
   },
   {
-    id: 11,
+    id: 122,
     title: 'Compaigns',
     slug: 'compaigns',
     icon: <LuBadgePercent />,
     isSearch: true
   },
   {
-    id: 12,
+    id: 11,
     title: 'Currencies',
     slug: 'currencies',
     icon: <AiOutlineDollarCircle />,
     isSearch: true
   },
+
   {
-    id: 13,
+    id: 12,
     title: 'Newsletter',
     slug: 'newsletter',
     icon: <SlEnvolopeLetter />,
     isSearch: false
   },
   {
-    id: 14,
+    id: 13,
     title: 'Settings',
     slug: 'settings',
     icon: <IoSettingsOutline />,
@@ -334,7 +336,6 @@ export default function Sidebar({ handleDrawerClose, handleDrawerOpen, open }) {
     </div>
   );
 }
-
 Sidebar.propTypes = {
   handleDrawerClose: PropTypes.func.isRequired,
   handleDrawerOpen: PropTypes.func.isRequired,

@@ -7,11 +7,12 @@ const { getUser } = require('../config/getUser');
 const getWishlist = async (req, res) => {
   try {
     const user = await getUser(req, res);
+    //  Fetch wishlist and related products
     const wishlist = user.wishlist;
     const products = await Products.aggregate([
       {
         $match: {
-          _id: { $in: wishlist },
+          _id: { $in: wishlist }, // Match products with IDs present in the Pids array
         },
       },
       {

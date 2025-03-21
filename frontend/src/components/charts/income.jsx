@@ -3,7 +3,9 @@ import { merge } from 'lodash';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactApexChart from 'react-apexcharts';
+// mui
 import { Card, CardHeader, Box, Tabs, Tab, Skeleton, useMediaQuery, useTheme } from '@mui/material';
+// components
 import BaseOptionChart from './BaseOptionChart';
 import { fCurrency } from 'src/utils/formatNumber';
 
@@ -11,61 +13,59 @@ export default function IncomeChart({ income, commission, isVendor, isLoading })
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [seriesData, setSeriesData] = useState('week');
-
-  // Create an array of weekday labels
   const pastWeek = [...Array(7).keys()].map((days) =>
     new Date(Date.now() - 86400000 * days).toLocaleString('en-us', {
       weekday: 'short'
     })
   );
-  
   const handleChange = (event, newValue) => {
     setSeriesData(newValue);
   };
-
   const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-  // Merge stacking configuration into the chart options instead of passing a boolean prop
   const chartOptions = merge(BaseOptionChart(), {
-    chart: { stacked: true },
     legend: { position: 'top', horizontalAlign: 'right' },
     xaxis: {
       categories:
         seriesData === 'week'
-          ? pastWeek.slice().reverse()
+          ? pastWeek.reverse()
           : seriesData === 'year'
             ? month
-            : Array.from({ length: 31 }, (_, i) => i + 1)
+            : [
+                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
+                29, 30, 31
+              ]
     },
     yaxis: [
       {
         labels: {
-          formatter: (val) => fCurrency(val)
+          formatter: function (val) {
+            return fCurrency(val);
+          }
         }
       }
     ]
   });
 
-  // Fallback to empty arrays if data is missing
-  const incomeData = income && income[seriesData] ? income[seriesData] : [];
-  const commissionData = commission && commission[seriesData] ? commission[seriesData] : [];
-
   return (
     <Card>
       <CardHeader
-        title="Income Report"
+        title={'Income Report'}
         action={
           <Tabs
             value={seriesData}
             onChange={handleChange}
             textColor="primary"
             indicatorColor="primary"
-            aria-label="income chart tabs"
-            sx={{ '& .MuiButtonBase-root:not(:last-of-type)': { marginRight: '1rem' } }}
+            aria-label="secondary tabs example"
+            sx={{
+              '& .MuiButtonBase-root:not(:last-of-type)': {
+                marginRight: '1rem'
+              }
+            }}
           >
-            <Tab value="week" label="Week" />
-            <Tab value="month" label="Month" />
-            <Tab value="year" label="Year" />
+            <Tab value="week" label={'Week'} />
+            <Tab value="month" label={'Month'} />
+            <Tab value="year" label={'Year'} />
           </Tabs>
         }
         sx={{ flexWrap: 'wrap' }}
@@ -74,10 +74,20 @@ export default function IncomeChart({ income, commission, isVendor, isLoading })
         {isLoading ? (
           <>
             <Skeleton variant="rectangular" width="100%" height={isMobile ? 260 : 360} sx={{ borderRadius: 2 }} />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1, mb: 3 }}>
-              {Array.from({ length: 6 }).map((_, idx) => (
-                <Skeleton key={idx} variant="text" sx={{ width: 40 }} />
-              ))}
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                mt: 1,
+                mb: 3
+              }}
+            >
+              <Skeleton variant="text" sx={{ width: 40 }} />
+              <Skeleton variant="text" sx={{ width: 40 }} />
+              <Skeleton variant="text" sx={{ width: 40 }} />
+              <Skeleton variant="text" sx={{ width: 40 }} />
+              <Skeleton variant="text" sx={{ width: 40 }} />
+              <Skeleton variant="text" sx={{ width: 40 }} />
             </Box>
           </>
         ) : (
@@ -94,13 +104,26 @@ export default function IncomeChart({ income, commission, isVendor, isLoading })
           >
             <ReactApexChart
               type="bar"
+              stack
               series={
                 isVendor
-                  ? [{ name: 'Income', data: incomeData }]
-                  : [
-                      { name: 'Income', data: incomeData },
-                      { name: 'Commission', data: commissionData }
+                  ? [
+                      {
+                        name: 'Income',
+                        data: income[seriesData]
+                      }
                     ]
+                  : [
+                      {
+                        name: 'Income',
+                        data: income[seriesData]
+                      },
+
+                      {
+                        name: 'Commission',
+                        data: commission[seriesData]
+                      }
+                    ].slice(0, !isVendor ? 2 : 1)
               }
               options={chartOptions}
               height={isMobile ? 260 : 400}
@@ -111,18 +134,11 @@ export default function IncomeChart({ income, commission, isVendor, isLoading })
     </Card>
   );
 }
-
 IncomeChart.propTypes = {
-  income: PropTypes.shape({
+  data: PropTypes.shape({
     week: PropTypes.array,
     month: PropTypes.array,
     year: PropTypes.array
   }),
-  commission: PropTypes.shape({
-    week: PropTypes.array,
-    month: PropTypes.array,
-    year: PropTypes.array
-  }),
-  isVendor: PropTypes.bool,
   isLoading: PropTypes.bool.isRequired
 };

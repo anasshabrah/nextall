@@ -1,4 +1,5 @@
-// File: src/utils/storage.js
+// src/utils/storage.js
+
 let storage;
 
 if (typeof window !== 'undefined') {

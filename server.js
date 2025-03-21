@@ -9,35 +9,40 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 
 // 1) Load environment variables
+//    - If you want your server to read from .env, do:
 dotenv.config();
+//    - Or if you prefer a single .env at the root, use dotenv.config() with no path
 
-// 2) Determine if we’re in dev mode
+// 2) Decide if we’re in dev mode
 const dev = process.env.NODE_ENV !== 'production';
 
-// 3) Create the Next.js application (frontend is in the "frontend" folder)
+// 3) Create the Next.js application
+//    - 'dir' is the folder that contains your Next.js code (the "frontend" folder).
 const nextApp = next({ dev, dir: './frontend' });
 
-// 4) Create a request handler to let Next.js process unhandled routes
+// 4) Create a request handler that will let Next process any
+//    requests it does not recognize as your custom routes.
 const handle = nextApp.getRequestHandler();
 
 // 5) Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connected.'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+mongoose.connect(process.env.MONGODB_URI, {
+  // if needed, specify options
+})
+.then(() => console.log('MongoDB connected.'))
+.catch((err) => console.error('MongoDB connection error:', err));
 
-// 6) Prepare the Next.js app, then start the Express server
+// 6) Prepare the Next.js app, then start up the Express server
 nextApp.prepare().then(() => {
   const server = express();
 
-  // Enable CORS with credentials for the frontend domain
-  server.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-    credentials: true,
-  }));
+  // Middlewares
+  server.use(cors());
   server.use(bodyParser.json());
 
   // ------------------------------------------------------------------
-  // Import and mount your Express routes
+  // IMPORT AND MOUNT YOUR EXISTING EXPRESS ROUTES
+  // (Basically copy what you have in `backend/src/index.js`, but we
+  //  no longer call app.listen() there. Instead we attach routes here.)
   // ------------------------------------------------------------------
   const homeRoutes = require('./backend/src/routes/home');
   const authRoutes = require('./backend/src/routes/auth');
@@ -63,7 +68,7 @@ nextApp.prepare().then(() => {
   const compaign = require('./backend/src/routes/compaign');
   const uploadRoutes = require('./backend/src/routes/upload');
 
-  // Mount routes at /api
+  // Mount them at /api, just as you did in index.js
   server.use('/api', homeRoutes);
   server.use('/api', authRoutes);
   server.use('/api', brandRoutes);
@@ -93,10 +98,14 @@ nextApp.prepare().then(() => {
     res.send('Merged backend + Next.js custom server is up!');
   });
 
-  // Let Next.js handle all other routes
-  server.all('*', (req, res) => handle(req, res));
+  // --------------------------------------------------------------
+  // ANY request that doesn't match our custom routes is handled by Next.js
+  // --------------------------------------------------------------
+  server.all('*', (req, res) => {
+    return handle(req, res);
+  });
 
-  // 7) Start the server on the designated port
+  // 7) Start the unified server on the desired port
   const PORT = process.env.PORT || 3000;
   server.listen(PORT, (err) => {
     if (err) throw err;

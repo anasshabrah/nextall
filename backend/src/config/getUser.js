@@ -1,58 +1,47 @@
-// File: backend/src/config/getUser.js
+// C:\Users\hanos\nextall\backend\src\config\getUser.js
 
 const Users = require("../models/User");
+const Shop = require('../models/Shop');
 
-/**
- * Retrieves the authenticated user.
- * Requires that the JWT middleware has already set req.user.
- * If `requireVerify` is true (default), then the user must be verified.
- */
 exports.getUser = async (req, requireVerify = true) => {
   if (!req.user) {
-    throw new Error("You must be logged in.");
+    throw new Error("You Must Be Logged In.");
   }
   const user = await Users.findById(req.user._id);
   if (!user) {
-    throw new Error("User not found.");
+    throw new Error("User Not Found.");
   }
-  if (requireVerify && !user.isVerified) {
-    throw new Error("User email is not verified.");
+  // If requireVerify is false then user must be verified.
+  if (!requireVerify && !user.isVerified) {
+    throw new Error("User Email Is Not Verified.");
   }
   return user;
 };
 
-/**
- * Retrieves an admin user.
- * Throws an error if the logged‐in user does not have an admin role.
- */
 exports.getAdmin = async (req) => {
   if (!req.user) {
-    throw new Error("You must be logged in.");
+    throw new Error("You Must Be Logged In.");
   }
   const user = await Users.findById(req.user._id);
   if (!user) {
-    throw new Error("User not found.");
+    throw new Error("User Not Found.");
   }
   if (!user.role.includes("admin")) {
-    throw new Error("Access denied.");
+    throw new Error("Access Denied.");
   }
   return user;
 };
 
-/**
- * Retrieves a vendor user.
- * Throws an error if the logged‐in user does not have a vendor role.
- */
 exports.getVendor = async (req) => {
   if (!req.user) {
-    throw new Error("You must be logged in.");
+    throw new Error("You Must Be Logged In.");
   }
   const user = await Users.findById(req.user._id);
   if (!user) {
-    throw new Error("User not found.");
+    throw new Error("User Not Found.");
   }
   if (!user.role.includes("vendor")) {
-    throw new Error("Access denied.");
+    throw new Error("Access Denied.");
   }
   return user;
 };

@@ -11,6 +11,8 @@ import toast from 'react-hot-toast';
 
 // formik
 import { useFormik, Form, FormikProvider } from 'formik';
+// cookies
+import { createCookies } from 'src/hooks/cookies';
 // redux
 import { useDispatch } from 'react-redux';
 import { setWishlist } from 'src/redux/slices/wishlist';
@@ -53,7 +55,8 @@ export default function LoginForm() {
       // Save user’s wishlist in Redux
       dispatch(setWishlist(data.user.wishlist));
 
-      // No need to manually save the token; it’s now set as an HttpOnly cookie.
+      // IMPORTANT: Save the token in localStorage so the Axios interceptor can attach it
+      localStorage.setItem('token', data.token);
 
       setLoading(false);
       toast.success('Logged in successfully!');

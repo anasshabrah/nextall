@@ -6,11 +6,11 @@ import numeral from 'numeral';
 
 const locale = 'en-US';
 export function fCurrency(number) {
-  // Use BASE_CURRENCY from env (ensure that it is defined in your .env file)
   const currency = new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: process.env.BASE_CURRENCY
+    currency: process.env.NEXT_PUBLIC_BASE_CURRENCY
   });
+
   return currency.format(number).slice(0, -1);
 }
 

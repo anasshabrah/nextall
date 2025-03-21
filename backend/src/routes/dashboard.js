@@ -1,5 +1,3 @@
-// C:\Users\hanos\nextall\backend\src\routes\dashboard.js
-
 const express = require('express');
 const router = express.Router();
 const dashboard = require('../controllers/dashboard');

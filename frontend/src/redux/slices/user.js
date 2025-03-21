@@ -2,6 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // ----------------------------------------------------------------------
+
 // initial state
 const initialState = {
   isAuthenticated: false,
@@ -15,6 +16,7 @@ const initialState = {
 const slice = createSlice({
   name: 'user',
   initialState,
+
   reducers: {
     setLogin(state, action) {
       state.user = action.payload;
@@ -24,8 +26,9 @@ const slice = createSlice({
       state.user = null;
       state.isAuthenticated = false;
     },
+
     setCount(state) {
-      state.count += 1;
+      state.count = state.count + 1;
     },
     setInitialize(state) {
       state.isInitialized = true;
@@ -42,7 +45,8 @@ const slice = createSlice({
     updateFollowShop(state, action) {
       const filtered = state.followingShops.filter((v) => v === action.payload);
       if (filtered.length) {
-        state.followingShops = state.followingShops.filter((v) => v !== action.payload);
+        const removedShop = state.followingShops.filter((v) => v !== action.payload);
+        state.followingShops = removedShop;
       } else {
         state.followingShops = [...state.followingShops, action.payload];
       }
@@ -64,3 +68,5 @@ export const {
   updateUserRole,
   updateFollowShop
 } = slice.actions;
+
+// ----------------------------------------------------------------------

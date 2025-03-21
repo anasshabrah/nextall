@@ -44,7 +44,7 @@ const registerUser = async (req, res) => {
       role: Boolean(UserCount) ? request.role || 'user' : 'super admin',
     });
 
-    // Generate JWT token (optional here if not used for login)
+    // Generate JWT token
     const token = jwt.sign(
       {
         _id: user._id,
@@ -82,7 +82,7 @@ const registerUser = async (req, res) => {
       success: true,
       message: 'Created User Successfully',
       otp,
-      token, // you may remove token here if not needed on the client side
+      token,
       user,
     });
   } catch (error) {
@@ -129,14 +129,6 @@ const loginUser = async (req, res) => {
       }
     );
 
-    // Set the JWT in an HttpOnly cookie (7-day expiration)
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
-    });
-
     const products = await Products.aggregate([
       {
         $match: {
@@ -178,7 +170,7 @@ const loginUser = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: 'Login Successfully',
-      // token is no longer sent to the client as it’s stored in the cookie
+      token,
       user: {
         _id: user._id,
         firstName: user.firstName,

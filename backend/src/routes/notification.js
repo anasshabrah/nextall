@@ -1,5 +1,3 @@
-// C:\Users\hanos\nextall\backend\src\routes\notification.js
-
 const express = require('express');
 const router = express.Router();
 const notificationRoutes = require('../controllers/notification');

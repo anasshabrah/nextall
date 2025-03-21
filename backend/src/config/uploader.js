@@ -1,4 +1,5 @@
-// File: backend/src/config/uploader.js
+// File: C:\Users\hanos\nextall\backend\src\config\uploader.js
+
 const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const fs = require('fs');
 const path = require('path');
@@ -27,7 +28,10 @@ const uploadOnR2 = async (filePath) => {
   await s3Client.send(command);
   // Construct the file URL based on your R2 endpoint and bucket name
   const fileUrl = `${process.env.R2_ENDPOINT.replace(/\/$/, '')}/${process.env.R2_BUCKET_NAME}/${fileName}`;
-  return { Key: fileName, Location: fileUrl };
+  return {
+    Key: fileName,
+    Location: fileUrl,
+  };
 };
 
 // Function to delete a file from R2
@@ -45,14 +49,20 @@ exports.multiFileUploader = async (images) => {
   for (let i = 0; i < images.length; i++) {
     const localFilePath = images[i];
     const result = await uploadOnR2(localFilePath);
-    imageUrlList.push({ _id: result.Key, url: result.Location });
+    imageUrlList.push({
+      _id: result.Key,
+      url: result.Location,
+    });
   }
   return imageUrlList;
 };
 
 exports.singleFileUploader = async (image) => {
   const result = await uploadOnR2(image);
-  return { _id: result.Key, url: result.Location };
+  return {
+    _id: result.Key,
+    url: result.Location,
+  };
 };
 
 exports.singleFileDelete = async (fileKey) => {
