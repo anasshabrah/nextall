@@ -12,7 +12,7 @@ import { fDateShort } from 'src/utils/formatTime';
 
 // icons
 import { FiEye } from 'react-icons/fi';
-import { LuUser2 } from 'react-icons/lu';
+import { LuUser } from 'react-icons/lu';
 import { FaUserCheck } from 'react-icons/fa6';
 
 // component
@@ -101,7 +101,7 @@ export default function UserRow({ isLoading, row, setId }) {
                       setId(row._id);
                     }}
                   >
-                    {row.role === 'admin' ? <FaUserCheck /> : <LuUser2 />}
+                    {row.role === 'admin' ? <FaUserCheck /> : <LuUser />}
                   </IconButton>
                 </Tooltip>
               )}
