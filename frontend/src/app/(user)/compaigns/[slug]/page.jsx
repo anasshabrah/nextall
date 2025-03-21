@@ -1,49 +1,50 @@
-// File: C:\Users\hanos\nextall\frontend\src\app\(user)\compaigns\[slug]\page.jsx
-
 import { Box, Container } from '@mui/material';
 import ShopDetailCover from 'src/components/_admin/shops/shopDetailCover';
 import ProductList from 'src/components/_main/products';
+import mongoose from 'mongoose';
 
-// Determine base URL: use the environment variable if set and not localhost.
-const baseUrl =
-  process.env.BASE_URL && process.env.BASE_URL !== 'http://localhost:3000'
-    ? process.env.BASE_URL
-    : '';
+// Import the Compaign model from your backend
+// Adjust the relative path if needed.
+import Compaign from '../../../backend/src/models/Compaign';
+
+// Helper: Connect to MongoDB if not already connected
+async function connectToDatabase() {
+  if (mongoose.connection.readyState >= 1) return;
+  return mongoose.connect(process.env.MONGODB_URI);
+}
 
 export const dynamic = 'error';
 export const revalidate = 10;
 
 export async function generateStaticParams() {
-  const res = await fetch(`${baseUrl || ''}/api/compaigns-slugs`);
-  if (!res.ok) {
-    throw new Error('Failed to fetch compaign slugs');
-  }
-  const { data } = await res.json();
-  return data?.map((compaign) => ({ slug: compaign.slug })) || [];
+  await connectToDatabase();
+  // Query only the 'slug' field from all compaigns.
+  const compaigns = await Compaign.find().select('slug').lean();
+  return compaigns.map((compaign) => ({ slug: compaign.slug }));
 }
 
 export async function generateMetadata({ params }) {
-  const res = await fetch(`${baseUrl || ''}/api/compaigns/${params.slug}`);
-  if (!res.ok) {
-    throw new Error('Failed to fetch compaign data');
+  await connectToDatabase();
+  // Fetch the compaign data based on the slug.
+  const compaign = await Compaign.findOne({ slug: params.slug }).lean();
+  if (!compaign) {
+    throw new Error('Compaign not found');
   }
-  const { data: response } = await res.json();
   return {
-    title: response.metaTitle || response.title || 'Compaign',
-    description: response.metaDescription || '',
+    title: compaign.metaTitle || compaign.title || 'Compaign',
+    description: compaign.metaDescription || '',
     openGraph: {
-      images: [response.cover?.url || ''],
+      images: [compaign.cover?.url || ''],
     },
   };
 }
 
 export default async function Listing({ params }) {
-  const { slug } = params;
-  const res = await fetch(`${baseUrl || ''}/api/compaign-title/${slug}`);
-  if (!res.ok) {
-    throw new Error('Failed to fetch compaign title');
+  await connectToDatabase();
+  const compaign = await Compaign.findOne({ slug: params.slug }).lean();
+  if (!compaign) {
+    throw new Error('Compaign not found');
   }
-  const { data: compaign } = await res.json();
   return (
     <Box>
       <Box sx={{ bgcolor: 'background.default' }}>
