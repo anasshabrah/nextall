@@ -4,8 +4,7 @@ import { Box, Container } from '@mui/material';
 import ShopDetailCover from 'src/components/_admin/shops/shopDetailCover';
 import ProductList from 'src/components/_main/products';
 
-// Use absolute URL if BASE_URL is set and not localhost;
-// otherwise, use a relative URL.
+// Determine base URL: use the environment variable if set and not localhost.
 const baseUrl =
   process.env.BASE_URL && process.env.BASE_URL !== 'http://localhost:3000'
     ? process.env.BASE_URL
