@@ -1,13 +1,14 @@
+// File: C:\Users\hanos\nextall\frontend\src\app\(user)\compaigns\[slug]\page.jsx
+
 import { Box, Container } from '@mui/material';
 import ShopDetailCover from 'src/components/_admin/shops/shopDetailCover';
 import ProductList from 'src/components/_main/products';
 import mongoose from 'mongoose';
 
-// Import the Compaign model from your backend
-// Adjust the relative path if needed.
-import Compaign from '../../../backend/src/models/Compaign';
+// Correct relative path to the backend Compaign model:
+import Compaign from '../../../../../../backend/src/models/Compaign';
 
-// Helper: Connect to MongoDB if not already connected
+// Helper: Connect to MongoDB if not already connected.
 async function connectToDatabase() {
   if (mongoose.connection.readyState >= 1) return;
   return mongoose.connect(process.env.MONGODB_URI);
@@ -18,7 +19,7 @@ export const revalidate = 10;
 
 export async function generateStaticParams() {
   await connectToDatabase();
-  // Query only the 'slug' field from all compaigns.
+  // Fetch only the slug field from all compaigns.
   const compaigns = await Compaign.find().select('slug').lean();
   return compaigns.map((compaign) => ({ slug: compaign.slug }));
 }
